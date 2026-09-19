@@ -165,7 +165,7 @@ Choose how this video should be published to your connected TikTok account.
 
 <div class="field">
 <label>TikTok account</label>
-<input type="text" value="@monkooficial · Monko" readonly>
+<input id="tiktokAccount" type="text" value="Loading TikTok account..." readonly>
 </div>
 
 <div class="field">
@@ -177,10 +177,7 @@ value="Monko tratando de convencer a la lavadora 😂">
 <div class="field">
 <label for="privacy">Privacy status</label>
 <select id="privacy">
-<option value="">Select privacy...</option>
-<option value="PUBLIC_TO_EVERYONE">Everyone</option>
-<option value="MUTUAL_FOLLOW_FRIENDS">Mutual friends</option>
-<option value="SELF_ONLY">Only me</option>
+<option value="">Loading privacy options...</option>
 </select>
 </div>
 
@@ -325,13 +322,89 @@ MONKO AI · Original AI content platform ·
 </div>
 
 <script>
+const CREATOR_INFO_URL =
+'https://ferlyn06.app.n8n.cloud/webhook/monko/tiktok/creator-info';
+
 const privacy = document.getElementById('privacy');
 const consent = document.getElementById('consent');
 const publish = document.getElementById('publish');
 const status = document.getElementById('publishStatus');
+const tiktokAccount = document.getElementById('tiktokAccount');
+const comments = document.getElementById('comments');
+const duet = document.getElementById('duet');
+const stitch = document.getElementById('stitch');
 
 function updateButton(){
 publish.disabled = !(privacy.value && consent.checked);
+}
+
+function addPrivacyOption(value, label){
+const option = document.createElement('option');
+option.value = value;
+option.textContent = label;
+privacy.appendChild(option);
+}
+
+async function loadCreatorInfo(){
+status.textContent = 'Loading TikTok creator information...';
+
+try{
+const response = await fetch(CREATOR_INFO_URL, {
+method:'GET'
+});
+
+if(!response.ok){
+throw new Error('HTTP ' + response.status);
+}
+
+const result = await response.json();
+const creator = result.data || result;
+
+if(creator.creator_username){
+tiktokAccount.value =
+'@' + creator.creator_username +
+(creator.creator_nickname
+? ' · ' + creator.creator_nickname
+: '');
+}else{
+tiktokAccount.value = 'TikTok account connected';
+}
+
+privacy.innerHTML = '';
+addPrivacyOption('', 'Select privacy...');
+
+const privacyLabels = {
+PUBLIC_TO_EVERYONE:'Everyone',
+MUTUAL_FOLLOW_FRIENDS:'Mutual friends',
+SELF_ONLY:'Only me'
+};
+
+(creator.privacy_level_options || []).forEach(function(value){
+addPrivacyOption(
+value,
+privacyLabels[value] || value
+);
+});
+
+comments.disabled = creator.comment_disabled === true;
+duet.disabled = creator.duet_disabled === true;
+stitch.disabled = creator.stitch_disabled === true;
+
+if(comments.disabled) comments.checked = false;
+if(duet.disabled) duet.checked = false;
+if(stitch.disabled) stitch.checked = false;
+
+status.textContent = 'TikTok creator information loaded.';
+updateButton();
+
+}catch(error){
+tiktokAccount.value = 'Unable to load TikTok account';
+privacy.innerHTML = '<option value="">Unable to load privacy options</option>';
+status.textContent =
+'Could not load TikTok creator information. Check the MONKO backend connection.';
+console.error('TikTok creator info error:', error);
+updateButton();
+}
 }
 
 privacy.addEventListener('change', updateButton);
@@ -341,6 +414,8 @@ publish.addEventListener('click', function(){
 status.innerHTML =
 'Publishing will be connected to the MONKO backend in the next step.';
 });
+
+loadCreatorInfo();
 </script>
 
 </body>
