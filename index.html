@@ -1,56 +1,544 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONKO — El mundo es más interesante de lo que crees</title>
-    <meta name="description" content="MONKO crea contenido de entretenimiento, situaciones inesperadas, humor y experiencias curiosas para Latinoamérica.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MONKO — AI Content Studio</title>
+
+<meta name="description"
+content="MONKO es una plataforma de creación y publicación de contenido corto con inteligencia artificial.">
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b0b0f;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.header {
+    height: 72px;
+    border-bottom: 1px solid #24242b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: #0b0b0f;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.logo span {
+    margin-left: 6px;
+}
+
+.nav {
+    display: flex;
+    gap: 28px;
+    color: #aaaab3;
+    font-size: 14px;
+}
+
+.nav a:hover {
+    color: #ffffff;
+}
+
+.connect-btn {
+    background: #fe2c55;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.connect-btn:hover {
+    transform: translateY(-1px);
+    opacity: .9;
+}
+
+.hero {
+    padding: 80px 6% 55px;
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: clamp(44px, 6vw, 76px);
+    line-height: 1;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: #fe2c55;
+}
+
+.hero p {
+    color: #b4b4be;
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 650px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.primary {
+    background: #fe2c55;
+    color: #fff;
+    padding: 15px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.secondary {
+    background: #1b1b22;
+    color: #fff;
+    padding: 15px 24px;
+    border-radius: 10px;
+    border: 1px solid #30303a;
+    cursor: pointer;
+}
+
+.monko-card {
+    background: linear-gradient(145deg, #19191f, #101014);
+    border: 1px solid #2b2b34;
+    border-radius: 24px;
+    min-height: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 110px;
+    box-shadow: 0 25px 70px rgba(0,0,0,.35);
+}
+
+.container {
+    width: 88%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.dashboard {
+    padding: 40px 0 70px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: #141419;
+    border: 1px solid #292930;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.card h3 {
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #9999a4;
+    line-height: 1.5;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 8px 12px;
+    background: #1b1b21;
+    border-radius: 20px;
+    color: #aaaab3;
+    font-size: 13px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #777;
+    border-radius: 50%;
+}
+
+.video-section {
+    padding: 20px 0 70px;
+}
+
+.video-panel {
+    background: #141419;
+    border: 1px solid #292930;
+    border-radius: 18px;
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 25px;
+}
+
+.video-preview {
+    height: 300px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, #25252e, #0f0f13);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+}
+
+.video-info h3 {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.video-info p {
+    color: #a6a6b0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.publish-btn {
+    background: #fe2c55;
+    border: none;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.publish-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.history {
+    padding: 10px 0 80px;
+}
+
+.history-box {
+    background: #141419;
+    border: 1px solid #292930;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.history-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 18px 22px;
+    border-bottom: 1px solid #25252c;
+    color: #aaaab3;
+}
+
+.history-row:last-child {
+    border-bottom: none;
+}
+
+.platform {
+    color: white;
+    font-weight: 700;
+}
+
+.footer {
+    border-top: 1px solid #24242b;
+    padding: 35px 6%;
+    color: #777781;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+@media(max-width: 850px) {
+
+    .nav {
+        display: none;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding-top: 55px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .video-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .video-preview {
+        height: 260px;
+    }
+
+    .header {
+        padding: 0 4%;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <main>
-        <h1>MONKO 🐒</h1>
+<header class="header">
 
-        <h2>El mundo es más interesante de lo que crees.</h2>
+    <div class="logo">
+        MONKO 🐒
+    </div>
 
-        <p>
-            MONKO es un proyecto de entretenimiento y creación de contenido
-            enfocado en situaciones inesperadas, humor, experiencias curiosas
-            y momentos diferentes.
-        </p>
+    <nav class="nav">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#video">Content</a>
+        <a href="#history">History</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+    </nav>
 
-        <p>
-            Nuestro contenido está creado para una audiencia de Latinoamérica
-            y se publica principalmente en plataformas de video y redes sociales.
-        </p>
+    <a
+        class="connect-btn"
+        href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">
+        Connect TikTok
+    </a>
 
-        <h2>Nuestras plataformas</h2>
+</header>
 
-        <ul>
-            <li>
-                <a href="https://www.youtube.com/@LamadrigueraMental">
-                    YouTube
-                </a>
-            </li>
-            <li>
-                <a href="https://www.tiktok.com/@monkooficial">
-                    TikTok
-                </a>
-            </li>
-        </ul>
 
-        <h2>Contacto</h2>
+<section class="hero">
 
-        <p>
-            MONKO utiliza herramientas tecnológicas para crear, analizar
-            y administrar contenido digital.
-        </p>
+    <div>
+
+        <h1>
+            Create.<br>
+            <span>Publish.</span><br>
+            Repeat.
+        </h1>
 
         <p>
-            © 2026 MONKO. Todos los derechos reservados.
+            MONKO is an AI-powered content studio for creating,
+            analyzing and publishing original short-form videos
+            across social platforms.
         </p>
-    </main>
+
+        <div class="hero-buttons">
+
+            <a
+                class="primary"
+                href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">
+                Connect TikTok
+            </a>
+
+            <a class="secondary" href="#video">
+                View Content
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="monko-card">
+        🐒
+    </div>
+
+</section>
+
+
+<section class="dashboard" id="dashboard">
+
+<div class="container">
+
+    <h2 class="section-title">
+        MONKO Dashboard
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>TikTok</h3>
+
+            <p>
+                Connect your TikTok account and manage
+                authorized content publishing.
+            </p>
+
+            <div class="status">
+                <span class="dot"></span>
+                Account not connected
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>AI Content</h3>
+
+            <p>
+                Generate original short-form videos
+                using MONKO's AI content workflow.
+            </p>
+
+            <div class="status">
+                <span class="dot"></span>
+                Ready
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Publishing</h3>
+
+            <p>
+                Prepare videos for publishing across
+                supported social platforms.
+            </p>
+
+            <div class="status">
+                <span class="dot"></span>
+                Ready
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<section class="video-section" id="video">
+
+<div class="container">
+
+    <h2 class="section-title">
+        Latest MONKO Video
+    </h2>
+
+    <div class="video-panel">
+
+        <div class="video-preview">
+            🐒
+        </div>
+
+        <div class="video-info">
+
+            <h3>
+                MONKO — Latest Original Video
+            </h3>
+
+            <p>
+                Original short-form video created with
+                MONKO's AI content workflow and prepared
+                for social media publishing.
+            </p>
+
+            <p>
+                <strong>Format:</strong> 9:16<br>
+                <strong>Type:</strong> Short-form video<br>
+                <strong>Platform:</strong> TikTok
+            </p>
+
+            <button class="publish-btn" disabled>
+                Publish to TikTok
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<section class="history" id="history">
+
+<div class="container">
+
+    <h2 class="section-title">
+        Publication History
+    </h2>
+
+    <div class="history-box">
+
+        <div class="history-row">
+            <span class="platform">Platform</span>
+            <span>Status</span>
+            <span>Date</span>
+        </div>
+
+        <div class="history-row">
+            <span class="platform">TikTok</span>
+            <span>Ready</span>
+            <span>—</span>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<footer class="footer">
+
+    <div>
+        © 2026 MONKO. All rights reserved.
+    </div>
+
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+    </div>
+
+</footer>
 
 </body>
 </html>
