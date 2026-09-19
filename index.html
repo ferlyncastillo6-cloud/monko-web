@@ -1,544 +1,1245 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MONKO - Plataforma de creación y publicación de contenido corto con IA.">
+  <meta name="theme-color" content="#08090d">
+  <title>MONKO — AI Content Platform</title>
 
-<title>MONKO — AI Content Studio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<meta name="description"
-content="MONKO es una plataforma de creación y publicación de contenido corto con inteligencia artificial.">
+    :root {
+      --bg: #08090d;
+      --panel: #101219;
+      --panel-2: #151821;
+      --border: rgba(255,255,255,0.08);
+      --text: #f5f5f7;
+      --muted: #9298a8;
+      --green: #62e58a;
+      --green-dark: #2e9f58;
+      --orange: #ff9f43;
+      --red: #ff5f56;
+      --blue: #5c9cff;
+    }
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(98,229,138,0.08), transparent 30%),
+        radial-gradient(circle at 85% 10%, rgba(92,156,255,0.06), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #0b0b0f;
-    color: #ffffff;
-    min-height: 100vh;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+    button {
+      font-family: inherit;
+    }
 
-.header {
-    height: 72px;
-    border-bottom: 1px solid #24242b;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 6%;
-    background: #0b0b0f;
-}
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
 
-.logo {
-    font-size: 28px;
-    font-weight: 800;
-}
+    /* SIDEBAR */
 
-.logo span {
-    margin-left: 6px;
-}
+    .sidebar {
+      width: 245px;
+      min-height: 100vh;
+      border-right: 1px solid var(--border);
+      background: rgba(8,9,13,0.92);
+      padding: 25px 18px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 10;
+    }
 
-.nav {
-    display: flex;
-    gap: 28px;
-    color: #aaaab3;
-    font-size: 14px;
-}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      margin-bottom: 35px;
+    }
 
-.nav a:hover {
-    color: #ffffff;
-}
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #62e58a, #2e9f58);
+      font-size: 23px;
+      box-shadow: 0 8px 30px rgba(98,229,138,0.15);
+    }
 
-.connect-btn {
-    background: #fe2c55;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: .2s;
-}
+    .logo-text {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
 
-.connect-btn:hover {
-    transform: translateY(-1px);
-    opacity: .9;
-}
+    .logo-sub {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 1px;
+    }
 
-.hero {
-    padding: 80px 6% 55px;
-    display: grid;
-    grid-template-columns: 1.2fr .8fr;
-    gap: 50px;
-    align-items: center;
-}
-
-.hero h1 {
-    font-size: clamp(44px, 6vw, 76px);
-    line-height: 1;
-    margin-bottom: 22px;
-}
-
-.hero h1 span {
-    color: #fe2c55;
-}
-
-.hero p {
-    color: #b4b4be;
-    font-size: 18px;
-    line-height: 1.7;
-    max-width: 650px;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 14px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.primary {
-    background: #fe2c55;
-    color: #fff;
-    padding: 15px 24px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.secondary {
-    background: #1b1b22;
-    color: #fff;
-    padding: 15px 24px;
-    border-radius: 10px;
-    border: 1px solid #30303a;
-    cursor: pointer;
-}
-
-.monko-card {
-    background: linear-gradient(145deg, #19191f, #101014);
-    border: 1px solid #2b2b34;
-    border-radius: 24px;
-    min-height: 330px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 110px;
-    box-shadow: 0 25px 70px rgba(0,0,0,.35);
-}
-
-.container {
-    width: 88%;
-    max-width: 1250px;
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 30px;
-    margin-bottom: 25px;
-}
-
-.dashboard {
-    padding: 40px 0 70px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
-
-.card {
-    background: #141419;
-    border: 1px solid #292930;
-    border-radius: 16px;
-    padding: 24px;
-}
-
-.card h3 {
-    margin-bottom: 12px;
-}
-
-.card p {
-    color: #9999a4;
-    line-height: 1.5;
-}
-
-.status {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 18px;
-    padding: 8px 12px;
-    background: #1b1b21;
-    border-radius: 20px;
-    color: #aaaab3;
-    font-size: 13px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background: #777;
-    border-radius: 50%;
-}
-
-.video-section {
-    padding: 20px 0 70px;
-}
-
-.video-panel {
-    background: #141419;
-    border: 1px solid #292930;
-    border-radius: 18px;
-    padding: 25px;
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 25px;
-}
-
-.video-preview {
-    height: 300px;
-    border-radius: 14px;
-    background: linear-gradient(160deg, #25252e, #0f0f13);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 80px;
-}
-
-.video-info h3 {
-    font-size: 25px;
-    margin-bottom: 12px;
-}
-
-.video-info p {
-    color: #a6a6b0;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.publish-btn {
-    background: #fe2c55;
-    border: none;
-    color: white;
-    padding: 14px 22px;
-    border-radius: 9px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.publish-btn:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-}
-
-.history {
-    padding: 10px 0 80px;
-}
-
-.history-box {
-    background: #141419;
-    border: 1px solid #292930;
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.history-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding: 18px 22px;
-    border-bottom: 1px solid #25252c;
-    color: #aaaab3;
-}
-
-.history-row:last-child {
-    border-bottom: none;
-}
-
-.platform {
-    color: white;
-    font-weight: 700;
-}
-
-.footer {
-    border-top: 1px solid #24242b;
-    padding: 35px 6%;
-    color: #777781;
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.footer-links {
-    display: flex;
-    gap: 20px;
-}
-
-.footer-links a:hover {
-    color: white;
-}
-
-@media(max-width: 850px) {
+    .nav-title {
+      color: #666c7a;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 0 12px;
+      margin: 20px 0 9px;
+    }
 
     .nav {
-        display: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav a.active {
+      box-shadow: inset 2px 0 0 var(--green);
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .sidebar-bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 18px;
+      right: 18px;
+    }
+
+    .status-box {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(98,229,138,0.7);
+    }
+
+    /* MAIN */
+
+    .main {
+      margin-left: 245px;
+      width: calc(100% - 245px);
+      padding: 28px 35px 50px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 35px;
+    }
+
+    .topbar-title h1 {
+      font-size: 28px;
+      font-weight: 750;
+      letter-spacing: -0.6px;
+    }
+
+    .topbar-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .connection-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+      border-radius: 30px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 17px;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #071109;
+    }
+
+    .btn-primary:hover {
+      background: #78ed9b;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* HERO */
 
     .hero {
-        grid-template-columns: 1fr;
-        padding-top: 55px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(98,229,138,0.07), transparent 55%),
+        var(--panel);
+      border-radius: 18px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -100px;
+      top: -130px;
+      background: rgba(98,229,138,0.08);
+      filter: blur(70px);
+      border-radius: 50%;
     }
 
-    .video-panel {
-        grid-template-columns: 1fr;
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 30px;
+      background: rgba(98,229,138,0.08);
+      border: 1px solid rgba(98,229,138,0.18);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 650;
+      margin-bottom: 15px;
+    }
+
+    .hero h2 {
+      font-size: 31px;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 670px;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    /* CARDS */
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 28px 0 12px;
+    }
+
+    .section-title h3 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 750;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-description {
+      color: #6e7482;
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    /* CONTENT GRID */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 15px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 17px 19px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-header h3 {
+      font-size: 14px;
+    }
+
+    .panel-header span {
+      color: var(--muted);
+      font-size: 11px;
     }
 
     .video-preview {
-        height: 260px;
+      min-height: 260px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(98,229,138,0.08), transparent 35%),
+        #0b0d12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
-    .header {
-        padding: 0 4%;
+    .monko-preview {
+      text-align: center;
     }
-}
-</style>
+
+    .monko-avatar {
+      width: 92px;
+      height: 92px;
+      margin: auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3a2d24, #1d1815);
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin-bottom: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .monko-preview strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .monko-preview small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .video-info {
+      padding: 17px 19px;
+    }
+
+    .video-title {
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    .video-meta {
+      display: flex;
+      gap: 15px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    /* PLATFORM */
+
+    .platform-list {
+      padding: 8px;
+    }
+
+    .platform {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 12px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+
+    .platform:hover {
+      background: rgba(255,255,255,0.025);
+    }
+
+    .platform-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .platform-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.06);
+      font-weight: 750;
+      font-size: 13px;
+    }
+
+    .platform-name {
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .platform-status {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .connected {
+      color: var(--green);
+    }
+
+    /* HISTORY */
+
+    .history {
+      margin-top: 15px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-table th {
+      color: #777d8a;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: left;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-table td {
+      padding: 14px 18px;
+      font-size: 11px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .history-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 650;
+    }
+
+    .badge-success {
+      color: var(--green);
+      background: rgba(98,229,138,0.08);
+    }
+
+    .badge-pending {
+      color: var(--orange);
+      background: rgba(255,159,67,0.08);
+    }
+
+    .empty-history {
+      padding: 35px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* INFO */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+      margin-top: 15px;
+    }
+
+    .info-card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .info-card-icon {
+      font-size: 19px;
+      margin-bottom: 9px;
+    }
+
+    .info-card h4 {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .info-card p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+
+    footer {
+      margin-top: 45px;
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      color: #646a77;
+      font-size: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 17px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1050px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 15px;
+      }
+
+      .sidebar-bottom {
+        display: none;
+      }
+
+      .nav {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+
+      .nav-title {
+        display: none;
+      }
+
+      .nav a {
+        white-space: nowrap;
+      }
+
+      .app {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 15px 40px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+      }
+
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero h2 {
+        font-size: 25px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .connection-pill {
+        display: none;
+      }
+
+      .hero {
+        padding: 23px;
+      }
+
+      .history-table {
+        min-width: 620px;
+      }
+
+      .history {
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="header">
+  <div class="app">
 
-    <div class="logo">
-        MONKO 🐒
-    </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <nav class="nav">
-        <a href="#dashboard">Dashboard</a>
-        <a href="#video">Content</a>
-        <a href="#history">History</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-    </nav>
+      <div class="logo">
+        <div class="logo-icon">🐒</div>
 
-    <a
-        class="connect-btn"
-        href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">
-        Connect TikTok
-    </a>
+        <div>
+          <div class="logo-text">MONKO</div>
+          <div class="logo-sub">AI Content Platform</div>
+        </div>
+      </div>
 
-</header>
+      <div class="nav-title">Workspace</div>
 
+      <nav class="nav">
 
-<section class="hero">
+        <a href="#dashboard" class="active">
+          <span class="nav-icon">⌂</span>
+          Dashboard
+        </a>
 
-    <div>
+        <a href="#content">
+          <span class="nav-icon">▶</span>
+          Content
+        </a>
 
-        <h1>
-            Create.<br>
-            <span>Publish.</span><br>
-            Repeat.
-        </h1>
+        <a href="#history">
+          <span class="nav-icon">◷</span>
+          History
+        </a>
 
-        <p>
-            MONKO is an AI-powered content studio for creating,
-            analyzing and publishing original short-form videos
-            across social platforms.
-        </p>
+      </nav>
 
-        <div class="hero-buttons">
+      <div class="nav-title">Information</div>
 
-            <a
-                class="primary"
-                href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">
-                Connect TikTok
-            </a>
+      <nav class="nav">
 
-            <a class="secondary" href="#video">
-                View Content
-            </a>
+        <a href="#platforms">
+          <span class="nav-icon">◎</span>
+          Platforms
+        </a>
+
+        <a href="privacy.html">
+          <span class="nav-icon">⌕</span>
+          Privacy
+        </a>
+
+        <a href="terms.html">
+          <span class="nav-icon">◈</span>
+          Terms
+        </a>
+
+      </nav>
+
+      <div class="sidebar-bottom">
+
+        <div class="status-box">
+
+          <div class="status-row">
+            <span class="status-dot"></span>
+            MONKO system operational
+          </div>
 
         </div>
 
-    </div>
+      </div>
+
+    </aside>
 
 
-    <div class="monko-card">
-        🐒
-    </div>
+    <!-- MAIN -->
+    <main class="main">
 
-</section>
+      <!-- TOP BAR -->
+      <div class="topbar">
+
+        <div class="topbar-title">
+          <h1>MONKO Dashboard</h1>
+          <p>Manage your AI-generated short-form content.</p>
+        </div>
+
+        <div class="top-actions">
+
+          <div class="connection-pill">
+            <span class="status-dot"></span>
+            TikTok connection ready
+          </div>
+
+          <a
+            class="btn btn-primary"
+            href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth"
+          >
+            Connect TikTok
+          </a>
+
+        </div>
+
+      </div>
 
 
-<section class="dashboard" id="dashboard">
+      <!-- HERO -->
+      <section class="hero" id="dashboard">
 
-<div class="container">
+        <div class="hero-content">
 
-    <h2 class="section-title">
-        MONKO Dashboard
-    </h2>
+          <div class="eyebrow">
+            <span>●</span>
+            AI CONTENT CREATION
+          </div>
 
-    <div class="cards">
+          <h2>
+            Create original MONKO content
+            and publish it across social platforms.
+          </h2>
 
-        <div class="card">
+          <p>
+            MONKO combines content intelligence, AI video generation,
+            publishing workflows and performance history to create
+            original short-form content for social media.
+          </p>
 
-            <h3>TikTok</h3>
+        </div>
 
-            <p>
-                Connect your TikTok account and manage
-                authorized content publishing.
-            </p>
+        <div class="hero-actions">
 
-            <div class="status">
-                <span class="dot"></span>
-                Account not connected
+          <a
+            class="btn btn-primary"
+            href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth"
+          >
+            Connect TikTok →
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <!-- STATS -->
+      <div class="section-title">
+
+        <h3>Overview</h3>
+
+        <span>Content platform</span>
+
+      </div>
+
+      <section class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-label">AI VIDEOS</div>
+
+          <div class="stat-value">1</div>
+
+          <div class="stat-description">
+            Generated MONKO content
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">PLATFORMS</div>
+
+          <div class="stat-value">2</div>
+
+          <div class="stat-description">
+            TikTok and YouTube
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">VIDEO FORMAT</div>
+
+          <div class="stat-value">9:16</div>
+
+          <div class="stat-description">
+            Short-form vertical content
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">AUTOMATION</div>
+
+          <div class="stat-value">AI</div>
+
+          <div class="stat-description">
+            Automated content workflow
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- CONTENT -->
+      <div class="section-title" id="content">
+
+        <h3>Latest Content</h3>
+
+        <span>MONKO content library</span>
+
+      </div>
+
+      <section class="content-grid">
+
+        <!-- VIDEO -->
+        <div class="panel">
+
+          <div class="panel-header">
+
+            <h3>Latest MONKO Video</h3>
+
+            <span>15 sec</span>
+
+          </div>
+
+          <div class="video-preview">
+
+            <div class="monko-preview">
+
+              <div class="monko-avatar">
+                🐒
+              </div>
+
+              <strong>MONKO</strong>
+
+              <small>AI-generated short-form content</small>
+
             </div>
 
-        </div>
+          </div>
 
+          <div class="video-info">
 
-        <div class="card">
-
-            <h3>AI Content</h3>
-
-            <p>
-                Generate original short-form videos
-                using MONKO's AI content workflow.
-            </p>
-
-            <div class="status">
-                <span class="dot"></span>
-                Ready
+            <div class="video-title">
+              Monko tratando de convencer a la lavadora 😂
             </div>
 
-        </div>
+            <div class="video-meta">
 
+              <span>15 sec</span>
+              <span>9:16</span>
+              <span>AI generated</span>
 
-        <div class="card">
-
-            <h3>Publishing</h3>
-
-            <p>
-                Prepare videos for publishing across
-                supported social platforms.
-            </p>
-
-            <div class="status">
-                <span class="dot"></span>
-                Ready
             </div>
 
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<section class="video-section" id="video">
-
-<div class="container">
-
-    <h2 class="section-title">
-        Latest MONKO Video
-    </h2>
-
-    <div class="video-panel">
-
-        <div class="video-preview">
-            🐒
-        </div>
-
-        <div class="video-info">
-
-            <h3>
-                MONKO — Latest Original Video
-            </h3>
-
-            <p>
-                Original short-form video created with
-                MONKO's AI content workflow and prepared
-                for social media publishing.
-            </p>
-
-            <p>
-                <strong>Format:</strong> 9:16<br>
-                <strong>Type:</strong> Short-form video<br>
-                <strong>Platform:</strong> TikTok
-            </p>
-
-            <button class="publish-btn" disabled>
-                Publish to TikTok
-            </button>
+          </div>
 
         </div>
 
-    </div>
 
-</div>
+        <!-- PLATFORMS -->
+        <div class="panel" id="platforms">
 
-</section>
+          <div class="panel-header">
+
+            <h3>Connected Platforms</h3>
+
+            <span>Publishing</span>
+
+          </div>
+
+          <div class="platform-list">
+
+            <!-- TIKTOK -->
+            <div class="platform">
+
+              <div class="platform-left">
+
+                <div class="platform-icon">
+                  TT
+                </div>
+
+                <div>
+
+                  <div class="platform-name">
+                    TikTok
+                  </div>
+
+                  <div class="platform-status connected">
+                    Connected
+                  </div>
+
+                </div>
+
+              </div>
+
+              <span class="badge badge-success">
+                ● Ready
+              </span>
+
+            </div>
 
 
-<section class="history" id="history">
+            <!-- YOUTUBE -->
+            <div class="platform">
 
-<div class="container">
+              <div class="platform-left">
 
-    <h2 class="section-title">
-        Publication History
-    </h2>
+                <div class="platform-icon">
+                  YT
+                </div>
 
-    <div class="history-box">
+                <div>
 
-        <div class="history-row">
-            <span class="platform">Platform</span>
-            <span>Status</span>
-            <span>Date</span>
+                  <div class="platform-name">
+                    YouTube
+                  </div>
+
+                  <div class="platform-status connected">
+                    Content platform
+                  </div>
+
+                </div>
+
+              </div>
+
+              <span class="badge badge-success">
+                ● Active
+              </span>
+
+            </div>
+
+
+            <!-- INSTAGRAM -->
+            <div class="platform">
+
+              <div class="platform-left">
+
+                <div class="platform-icon">
+                  IG
+                </div>
+
+                <div>
+
+                  <div class="platform-name">
+                    Instagram
+                  </div>
+
+                  <div class="platform-status">
+                    Integration available
+                  </div>
+
+                </div>
+
+              </div>
+
+              <span class="badge badge-pending">
+                Planned
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="history-row">
-            <span class="platform">TikTok</span>
-            <span>Ready</span>
-            <span>—</span>
+      </section>
+
+
+      <!-- FEATURES -->
+      <div class="section-title">
+
+        <h3>MONKO Platform</h3>
+
+        <span>Core capabilities</span>
+
+      </div>
+
+      <section class="info-grid">
+
+        <div class="info-card">
+
+          <div class="info-card-icon">
+            🧠
+          </div>
+
+          <h4>Content Intelligence</h4>
+
+          <p>
+            Analyzes content patterns, historical performance
+            and platform signals to generate original concepts.
+          </p>
+
         </div>
 
-    </div>
 
-</div>
+        <div class="info-card">
 
-</section>
+          <div class="info-card-icon">
+            🎬
+          </div>
+
+          <h4>AI Video Generation</h4>
+
+          <p>
+            Creates short-form MONKO videos while maintaining
+            the character's visual identity and style.
+          </p>
+
+        </div>
 
 
-<footer class="footer">
+        <div class="info-card">
 
-    <div>
-        © 2026 MONKO. All rights reserved.
-    </div>
+          <div class="info-card-icon">
+            🚀
+          </div>
 
-    <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-    </div>
+          <h4>Social Publishing</h4>
 
-</footer>
+          <p>
+            Connects authorized social accounts and prepares
+            generated content for automated publishing.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- HISTORY -->
+      <div class="section-title history" id="history">
+
+        <h3>Publication History</h3>
+
+        <span>Recent activity</span>
+
+      </div>
+
+      <section class="panel">
+
+        <table class="history-table">
+
+          <thead>
+
+            <tr>
+
+              <th>Platform</th>
+              <th>Status</th>
+              <th>Video</th>
+              <th>Date</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr>
+
+              <td>TikTok</td>
+
+              <td>
+                <span class="badge badge-success">
+                  ● Connected
+                </span>
+              </td>
+
+              <td>MONKO video</td>
+
+              <td>Ready</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </section>
+
+
+      <!-- FOOTER -->
+      <footer>
+
+        <div>
+          © 2026 MONKO — AI Content Platform
+        </div>
+
+        <div class="footer-links">
+
+          <a href="privacy.html">
+            Privacy Policy
+          </a>
+
+          <a href="terms.html">
+            Terms of Service
+          </a>
+
+        </div>
+
+      </footer>
+
+    </main>
+
+  </div>
 
 </body>
 </html>
