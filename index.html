@@ -1,218 +1,347 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="MONKO - AI Content Platform">
-<title>MONKO — AI Content Platform</title>
+<title>MONKO Dashboard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#08090d;color:#f5f5f7;min-height:100vh}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0d10;color:#f4f5f7}
 a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
 .app{display:flex;min-height:100vh}
-.sidebar{width:220px;background:#0b0c10;border-right:1px solid #20232b;padding:25px 16px;position:fixed;top:0;bottom:0}
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:35px;padding:0 8px}
-.logo-icon{width:40px;height:40px;background:#62e58a;color:#071109;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px}
-.logo-text{font-size:20px;font-weight:bold}
-.logo-sub{font-size:9px;color:#777e8c;text-transform:uppercase;letter-spacing:1px}
-.nav-title{font-size:9px;color:#626875;text-transform:uppercase;margin:22px 10px 8px}
-.nav{display:flex;flex-direction:column;gap:4px}
-.nav a{padding:11px;border-radius:8px;color:#9298a8;font-size:13px}
-.nav a:hover,.nav a.active{background:#171a21;color:#fff}
-.sidebar-status{position:absolute;bottom:25px;left:16px;right:16px;border:1px solid #20232b;border-radius:9px;padding:12px;color:#9298a8;font-size:10px}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#62e58a;margin-right:6px}
-.main{margin-left:220px;width:calc(100% - 220px);padding:30px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
-h1{font-size:27px}
-.subtitle{color:#9298a8;font-size:12px;margin-top:4px}
-.btn{display:inline-block;padding:11px 16px;border-radius:8px;font-size:12px;font-weight:bold}
-.btn-green{background:#62e58a;color:#071109}
-.hero{background:#101219;border:1px solid #20232b;border-radius:15px;padding:30px;margin-bottom:18px}
-.hero-label{color:#62e58a;font-size:10px;font-weight:bold;margin-bottom:12px}
-.hero h2{font-size:28px;max-width:700px;margin-bottom:10px}
-.hero p{color:#9298a8;font-size:13px;max-width:700px;line-height:1.6}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.card{background:#101219;border:1px solid #20232b;border-radius:12px;padding:17px}
-.card-label{font-size:10px;color:#9298a8;margin-bottom:7px}
-.card-value{font-size:23px;font-weight:bold}
-.card-text{font-size:9px;color:#666d7b;margin-top:4px}
-.section-title{font-size:14px;font-weight:bold;margin:25px 0 10px}
-.grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
-.panel{background:#101219;border:1px solid #20232b;border-radius:12px;overflow:hidden}
-.panel-title{padding:15px 17px;border-bottom:1px solid #20232b;font-size:13px;font-weight:bold}
-.preview{height:230px;background:#0b0d12;display:flex;align-items:center;justify-content:center;text-align:center}
-.monko{font-size:65px;margin-bottom:8px}
-.preview strong{display:block;font-size:13px}
-.preview small{color:#9298a8;font-size:10px}
-.video-info{padding:15px 17px}
-.video-title{font-size:12px;font-weight:bold;margin-bottom:7px}
-.meta{font-size:10px;color:#9298a8}
-.platform{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #191c23}
-.platform:last-child{border-bottom:0}
-.platform-name{font-size:12px;font-weight:bold}
-.platform-status{font-size:10px;color:#62e58a;margin-top:3px}
-.badge{font-size:9px;padding:4px 7px;border-radius:15px;background:#13281c;color:#62e58a}
-.badge-gray{background:#20232b;color:#9298a8}
-.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.info h3{font-size:12px;margin-bottom:6px}
-.info p{font-size:10px;color:#9298a8;line-height:1.5}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:13px 17px;border-bottom:1px solid #191c23;font-size:10px}
-th{color:#777e8c;font-weight:normal}
-footer{margin-top:35px;padding-top:18px;border-top:1px solid #20232b;color:#666d7b;font-size:9px;display:flex;justify-content:space-between}
-.footer-links{display:flex;gap:15px}
+.sidebar{width:235px;background:#111419;border-right:1px solid #242830;padding:24px 16px;position:fixed;top:0;bottom:0}
+.logo{font-size:25px;font-weight:800;padding:8px 12px 30px}
+.logo span{opacity:.55}
+.nav a{display:block;padding:12px 14px;border-radius:10px;color:#aeb4bd;margin-bottom:5px}
+.nav a:hover,.nav a.active{background:#1b2027;color:#fff}
+.main{margin-left:235px;width:calc(100% - 235px);padding:32px 40px;max-width:1500px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.top h1{margin:0;font-size:28px}
+.status{background:#14251b;color:#62df8b;border:1px solid #245536;padding:8px 13px;border-radius:20px;font-size:13px}
+.hero{background:linear-gradient(135deg,#181d24,#101318);border:1px solid #272d35;border-radius:18px;padding:30px;margin-bottom:25px}
+.hero h2{font-size:31px;margin:0 0 10px}
+.hero p{color:#aeb4bd;max-width:700px;line-height:1.6;margin:0 0 22px}
+.btn{display:inline-block;border:0;border-radius:10px;padding:11px 17px;cursor:pointer;font-weight:700}
+.primary{background:#fff;color:#0b0d10}
+.secondary{background:#1c222a;color:#fff;border:1px solid #303741}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:25px}
+.card{background:#12161b;border:1px solid #252b33;border-radius:15px;padding:22px}
+.card h3{margin:0 0 9px;font-size:17px}
+.muted{color:#929aa5}
+.stat{font-size:29px;font-weight:800;margin-top:8px}
+.video-card{display:grid;grid-template-columns:260px 1fr;gap:25px}
+.preview{height:380px;background:#080a0d;border:1px solid #282e36;border-radius:13px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.monko{font-size:100px}
+.preview small{position:absolute;bottom:12px;left:12px;color:#8f98a4}
+.info h2{margin-top:0}
+.tags span{display:inline-block;background:#20262e;border-radius:7px;padding:6px 9px;margin:4px 4px 0 0;font-size:12px;color:#c5cad1}
+.platforms{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.platform{padding:18px;border:1px solid #282e36;border-radius:12px;background:#15191f}
+.platform strong{display:block;margin-bottom:7px}
+.connected{color:#61dc88;font-size:13px}
+.section{margin-top:35px}
+.section h2{font-size:21px;margin-bottom:15px}
+.table{width:100%;border-collapse:collapse;background:#12161b;border:1px solid #252b33;border-radius:12px;overflow:hidden}
+.table th,.table td{text-align:left;padding:14px;border-bottom:1px solid #242a31;font-size:13px}
+.table th{color:#8e97a3}
+.export{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:25px}
+.form-card{background:#12161b;border:1px solid #292f37;border-radius:15px;padding:24px}
+.form-card h3{margin-top:0}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input,.field select{width:100%;background:#0c0f13;color:#fff;border:1px solid #303741;border-radius:9px;padding:11px;outline:none}
+.field input:focus,.field select:focus{border-color:#777}
+.check{display:flex;align-items:center;gap:10px;margin:12px 0;color:#c8cdd4;font-size:13px}
+.check input{width:17px;height:17px}
+.consent{padding:14px;background:#181d23;border:1px solid #2c333c;border-radius:10px;margin:20px 0;line-height:1.5}
+.publish{width:100%;background:#fff;color:#080a0d;border:0;border-radius:10px;padding:13px;font-weight:800;cursor:pointer}
+.publish:disabled{opacity:.35;cursor:not-allowed}
+.notice{font-size:12px;color:#8f98a4;line-height:1.5;margin-top:12px}
+.badge{display:inline-block;padding:5px 8px;border-radius:6px;background:#19241e;color:#67df8d;font-size:11px}
+footer{margin-top:50px;padding:25px 0;border-top:1px solid #242a31;color:#777f8a;font-size:12px}
 @media(max-width:900px){
-.sidebar{width:180px}
-.main{margin-left:180px;width:calc(100% - 180px);padding:20px}
-.stats{grid-template-columns:repeat(2,1fr)}
-.grid{grid-template-columns:1fr}
-.info-grid{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-.app{display:block}
-.sidebar{position:static;width:100%;min-height:auto;border-right:0;border-bottom:1px solid #20232b}
-.sidebar-status{display:none}
-.nav{flex-direction:row;overflow:auto}
-.main{margin-left:0;width:100%;padding:15px}
-.topbar{align-items:flex-start;gap:12px;flex-direction:column}
-.hero h2{font-size:23px}
-.stats{grid-template-columns:1fr 1fr}
-footer{flex-direction:column;gap:10px}
+.sidebar{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:25px}
+.grid,.platforms{grid-template-columns:1fr}
+.video-card,.export{grid-template-columns:1fr}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
 
 <aside class="sidebar">
-<div class="logo">
-<div class="logo-icon">🐒</div>
-<div><div class="logo-text">MONKO</div><div class="logo-sub">AI Content Platform</div></div>
-</div>
-
-<div class="nav-title">Workspace</div>
+<div class="logo">MONKO<span> AI</span></div>
 <nav class="nav">
-<a href="#dashboard" class="active">⌂ Dashboard</a>
-<a href="#content">▶ Content</a>
-<a href="#history">◷ History</a>
-</nav>
-
-<div class="nav-title">Information</div>
-<nav class="nav">
-<a href="#platforms">◎ Platforms</a>
+<a href="#dashboard" class="active">Dashboard</a>
+<a href="#content">Content</a>
+<a href="#export">Export to TikTok</a>
+<a href="#history">History</a>
+<a href="#platforms">Platforms</a>
 <a href="privacy.html">Privacy</a>
 <a href="terms.html">Terms</a>
 </nav>
-
-<div class="sidebar-status"><span class="dot"></span>MONKO system operational</div>
 </aside>
 
 <main class="main">
 
-<div class="topbar">
-<div>
+<div class="top" id="dashboard">
 <h1>MONKO Dashboard</h1>
-<div class="subtitle">Manage your AI-generated short-form content.</div>
+<div class="status">● System Online</div>
 </div>
 
-<a class="btn btn-green" href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">Connect TikTok</a>
+<section class="hero">
+<h2>Create original MONKO content.</h2>
+<p>
+Create original short-form videos with MONKO's AI content system,
+then prepare and publish them across your connected social platforms.
+</p>
+<a href="#export" class="btn primary">Export to TikTok</a>
+<a href="#content" class="btn secondary">View Content</a>
+</section>
+
+<div class="grid">
+<div class="card">
+<div class="muted">Videos Created</div>
+<div class="stat">1</div>
+</div>
+<div class="card">
+<div class="muted">TikTok Videos</div>
+<div class="stat">1</div>
+</div>
+<div class="card">
+<div class="muted">Connected Platforms</div>
+<div class="stat">1</div>
+</div>
 </div>
 
-<section class="hero" id="dashboard">
-<div class="hero-label">● AI CONTENT CREATION</div>
-<h2>Create original MONKO content and publish it across social platforms.</h2>
-<p>MONKO combines content intelligence, AI video generation, publishing workflows and performance history to create original short-form content for social media.</p>
-<br>
-<a class="btn btn-green" href="https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.list%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth">Connect TikTok →</a>
-</section>
-
-<div class="section-title">Overview</div>
-
-<section class="stats">
-<div class="card"><div class="card-label">AI VIDEOS</div><div class="card-value">1</div><div class="card-text">Generated MONKO content</div></div>
-<div class="card"><div class="card-label">PLATFORMS</div><div class="card-value">2</div><div class="card-text">TikTok and YouTube</div></div>
-<div class="card"><div class="card-label">VIDEO FORMAT</div><div class="card-value">9:16</div><div class="card-text">Vertical short-form</div></div>
-<div class="card"><div class="card-label">AUTOMATION</div><div class="card-value">AI</div><div class="card-text">Automated workflow</div></div>
-</section>
-
-<div class="section-title" id="content">Latest Content</div>
-
-<section class="grid">
-
-<div class="panel">
-<div class="panel-title">Latest MONKO Video</div>
+<section class="section" id="content">
+<h2>Latest MONKO Content</h2>
+<div class="card video-card">
 <div class="preview">
-<div>
 <div class="monko">🐒</div>
-<strong>MONKO</strong>
-<small>AI-generated short-form content</small>
+<small>9:16 · 15 seconds</small>
+</div>
+<div class="info">
+<span class="badge">READY TO EXPORT</span>
+<h2>Monko tratando de convencer a la lavadora 😂</h2>
+<p class="muted">
+Original MONKO short-form video prepared for social publishing.
+</p>
+<div class="tags">
+<span>Original Content</span>
+<span>MONKO</span>
+<span>15 sec</span>
+<span>9:16</span>
+</div>
+<br>
+<a href="#export" class="btn primary">Prepare TikTok Export</a>
 </div>
 </div>
-<div class="video-info">
-<div class="video-title">Monko tratando de convencer a la lavadora 😂</div>
-<div class="meta">15 sec · 9:16 · AI generated</div>
+</section>
+
+<section class="section" id="export">
+<h2>Export to TikTok</h2>
+
+<div class="export">
+
+<div class="form-card">
+<h3>Video Preview</h3>
+<div class="preview">
+<div class="monko">🐒</div>
+<small>MONKO · 9:16 · 15 sec</small>
 </div>
+<p class="notice">
+The final video generated by MONKO will appear here before publishing.
+</p>
 </div>
 
-<div class="panel" id="platforms">
-<div class="panel-title">Connected Platforms</div>
+<div class="form-card">
+<h3>Publish to TikTok</h3>
+<p class="muted">
+Choose how this video should be published to your connected TikTok account.
+</p>
+
+<div class="field">
+<label>TikTok account</label>
+<input type="text" value="@monkooficial · Monko" readonly>
+</div>
+
+<div class="field">
+<label for="title">Title</label>
+<input id="title" type="text"
+value="Monko tratando de convencer a la lavadora 😂">
+</div>
+
+<div class="field">
+<label for="privacy">Privacy status</label>
+<select id="privacy">
+<option value="">Select privacy...</option>
+<option value="PUBLIC_TO_EVERYONE">Everyone</option>
+<option value="MUTUAL_FOLLOW_FRIENDS">Mutual friends</option>
+<option value="SELF_ONLY">Only me</option>
+</select>
+</div>
+
+<div class="field">
+<label>Interaction settings</label>
+
+<label class="check">
+<input type="checkbox" id="comments">
+Allow comments
+</label>
+
+<label class="check">
+<input type="checkbox" id="duet">
+Allow Duet
+</label>
+
+<label class="check">
+<input type="checkbox" id="stitch">
+Allow Stitch
+</label>
+</div>
+
+<div class="field">
+<label class="check">
+<input type="checkbox" id="aigc">
+This video contains AI-generated content
+</label>
+</div>
+
+<div class="consent">
+<label class="check">
+<input type="checkbox" id="consent">
+I confirm that I want MONKO to send this video and the selected
+publishing settings to my TikTok account.
+</label>
+</div>
+
+<button id="publish" class="publish" disabled>
+Publish to TikTok
+</button>
+
+<p class="notice">
+After publishing, TikTok may take some time to process the video.
+MONKO will check the publication status and show the result here.
+</p>
+
+<div id="publishStatus" class="notice"></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="platforms">
+<h2>Connected Platforms</h2>
+<div class="platforms">
 
 <div class="platform">
-<div><div class="platform-name">TikTok</div><div class="platform-status">Connected</div></div>
-<span class="badge">● Ready</span>
+<strong>TikTok</strong>
+<div class="connected">● Connected</div>
+<p class="muted">@monkooficial</p>
+<a class="btn secondary" href="#export">Manage</a>
 </div>
 
 <div class="platform">
-<div><div class="platform-name">YouTube</div><div class="platform-status">Active</div></div>
-<span class="badge">● Active</span>
+<strong>YouTube</strong>
+<div class="muted">Not connected</div>
+<p class="muted">Shorts publishing</p>
+<button class="btn secondary">Connect</button>
 </div>
 
 <div class="platform">
-<div><div class="platform-name">Instagram</div><div class="platform-status" style="color:#9298a8">Integration available</div></div>
-<span class="badge badge-gray">Planned</span>
+<strong>Instagram</strong>
+<div class="muted">Not connected</div>
+<p class="muted">Reels publishing</p>
+<button class="btn secondary">Connect</button>
 </div>
 
 </div>
 </section>
 
-<div class="section-title">MONKO Platform</div>
+<section class="section" id="history">
+<h2>Publication History</h2>
 
-<section class="info-grid">
-<div class="card info">
-<h3>🧠 Content Intelligence</h3>
-<p>Analyzes content patterns, historical performance and platform signals to generate original concepts.</p>
-</div>
-
-<div class="card info">
-<h3>🎬 AI Video Generation</h3>
-<p>Creates short-form MONKO videos while maintaining the character's visual identity and style.</p>
-</div>
-
-<div class="card info">
-<h3>🚀 Social Publishing</h3>
-<p>Connects authorized social accounts and prepares generated content for automated publishing.</p>
-</div>
-</section>
-
-<div class="section-title" id="history">Publication History</div>
-
-<section class="panel">
-<table>
+<table class="table">
 <thead>
-<tr><th>Platform</th><th>Status</th><th>Video</th><th>Date</th></tr>
+<tr>
+<th>Platform</th>
+<th>Content</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
 </thead>
 <tbody>
-<tr><td>TikTok</td><td><span class="badge">● Connected</span></td><td>MONKO video</td><td>Ready</td></tr>
+<tr>
+<td>TikTok</td>
+<td>Monko tratando de convencer a la lavadora 😂</td>
+<td><span class="badge">Connected</span></td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 </section>
 
+<section class="section">
+<h2>MONKO Intelligence</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Content Intelligence</h3>
+<p class="muted">
+MONKO analyzes internal performance and external content signals
+to identify opportunities for original content.
+</p>
+</div>
+
+<div class="card">
+<h3>AI Video Generation</h3>
+<p class="muted">
+Scripts, scenes, visual references and videos are generated through
+the MONKO production workflow.
+</p>
+</div>
+
+<div class="card">
+<h3>Social Publishing</h3>
+<p class="muted">
+Connected social platforms can receive original MONKO content
+through their supported publishing APIs.
+</p>
+</div>
+
+</div>
+</section>
+
 <footer>
-<div>© 2026 MONKO — AI Content Platform</div>
-<div class="footer-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></div>
+MONKO AI · Original AI content platform ·
+<a href="privacy.html">Privacy</a> ·
+<a href="terms.html">Terms</a>
 </footer>
 
 </main>
 </div>
+
+<script>
+const privacy = document.getElementById('privacy');
+const consent = document.getElementById('consent');
+const publish = document.getElementById('publish');
+const status = document.getElementById('publishStatus');
+
+function updateButton(){
+publish.disabled = !(privacy.value && consent.checked);
+}
+
+privacy.addEventListener('change', updateButton);
+consent.addEventListener('change', updateButton);
+
+publish.addEventListener('click', function(){
+status.innerHTML =
+'Publishing will be connected to the MONKO backend in the next step.';
+});
+</script>
+
 </body>
 </html>
