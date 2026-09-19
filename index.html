@@ -358,13 +358,24 @@ throw new Error('HTTP ' + response.status);
 }
 
 const result = await response.json();
-const creator = result.data || result;
 
-if(creator.creator_username){
+let creator = result?.data ?? result;
+
+if(typeof creator === 'string'){
+try{
+creator = JSON.parse(creator);
+}catch(e){
+throw new Error('Invalid creator data returned by MONKO backend');
+}
+}
+
+const creatorData = creator?.data ?? creator;
+
+if(creatorData.creator_username){
 tiktokAccount.value =
-'@' + creator.creator_username +
-(creator.creator_nickname
-? ' · ' + creator.creator_nickname
+'@' + creatorData.creator_username +
+(creatorData.creator_nickname
+? ' · ' + creatorData.creator_nickname
 : '');
 }else{
 tiktokAccount.value = 'TikTok account connected';
@@ -379,22 +390,34 @@ MUTUAL_FOLLOW_FRIENDS:'Mutual friends',
 SELF_ONLY:'Only me'
 };
 
-(creator.privacy_level_options || []).forEach(function(value){
+let privacyOptions =
+creatorData.privacy_level_options ??
+result?.privacy_level_options ??
+[];
+
+if(!Array.isArray(privacyOptions)){
+privacyOptions = Object.values(privacyOptions);
+}
+
+privacyOptions.forEach(function(value){
 addPrivacyOption(
 value,
 privacyLabels[value] || value
 );
 });
 
-comments.disabled = creator.comment_disabled === true;
-duet.disabled = creator.duet_disabled === true;
-stitch.disabled = creator.stitch_disabled === true;
+comments.disabled = creatorData.comment_disabled === true;
+duet.disabled = creatorData.duet_disabled === true;
+stitch.disabled = creatorData.stitch_disabled === true;
 
 if(comments.disabled) comments.checked = false;
 if(duet.disabled) duet.checked = false;
 if(stitch.disabled) stitch.checked = false;
 
-status.textContent = 'TikTok creator information loaded.';
+status.textContent =
+privacyOptions.length
+? 'TikTok creator information loaded.'
+: 'TikTok creator information loaded, but no privacy options were returned.';
 updateButton();
 
 }catch(error){
