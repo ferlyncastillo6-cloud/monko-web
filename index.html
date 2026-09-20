@@ -325,6 +325,9 @@ MONKO AI · Original AI content platform ·
 const CREATOR_INFO_URL =
 'https://ferlyn06.app.n8n.cloud/webhook/monko/tiktok/creator-info';
 
+const PUBLISH_URL =
+'https://ferlyn06.app.n8n.cloud/webhook-test/monko/tiktok/publish';
+
 const privacy = document.getElementById('privacy');
 const consent = document.getElementById('consent');
 const publish = document.getElementById('publish');
@@ -433,9 +436,56 @@ updateButton();
 privacy.addEventListener('change', updateButton);
 consent.addEventListener('change', updateButton);
 
-publish.addEventListener('click', function(){
-status.innerHTML =
-'Publishing will be connected to the MONKO backend in the next step.';
+publish.addEventListener('click', async function(){
+if(!privacy.value || !consent.checked){
+updateButton();
+return;
+}
+
+publish.disabled = true;
+status.textContent = 'Sending publication request to MONKO backend...';
+
+const payload = {
+  title: document.getElementById('title').value.trim(),
+  privacy_level: privacy.value,
+  allow_comments: comments.checked,
+  allow_duet: duet.checked,
+  allow_stitch: stitch.checked,
+  aigc: document.getElementById('aigc').checked,
+  consent: consent.checked,
+  video_id: document.getElementById('videoId')?.value || '',
+  video_url: document.getElementById('videoUrl')?.value || ''
+};
+
+try{
+const response = await fetch(PUBLISH_URL, {
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify(payload)
+});
+
+let result = null;
+try{ result = await response.json(); }catch(e){}
+
+if(!response.ok){
+throw new Error(
+  result?.message ||
+  result?.error ||
+  'HTTP ' + response.status
+);
+}
+
+status.textContent =
+result?.message ||
+'Publication request received by MONKO backend.';
+
+}catch(error){
+status.textContent =
+'Could not send publication request: ' + error.message;
+console.error('TikTok publication error:', error);
+}finally{
+updateButton();
+}
 });
 
 loadCreatorInfo();
