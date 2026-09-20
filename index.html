@@ -654,6 +654,9 @@ const CREATOR_INFO_URL =
 const PUBLISH_URL =
 'https://ferlyn06.app.n8n.cloud/webhook/monko/tiktok/publish';
 
+const LATEST_VIDEO_URL =
+'https://ferlyn06.app.n8n.cloud/webhook/monko/tiktok/latest-video';
+
 
 const privacy =
 document.getElementById('privacy');
@@ -770,6 +773,72 @@ option.value = value;
 option.textContent = label;
 
 privacy.appendChild(option);
+
+}
+
+
+async function loadLatestVideo(){
+
+videoUrlStatus.textContent =
+'Loading latest MONKO video...';
+
+videoUrlStatus.className =
+'video-url-status';
+
+try{
+
+const response =
+await fetch(LATEST_VIDEO_URL,{
+method:'GET',
+cache:'no-store'
+});
+
+if(!response.ok){
+
+throw new Error(
+'HTTP ' + response.status
+);
+
+}
+
+const result =
+await response.json();
+
+if(!result?.success || !result?.video?.video_url){
+
+throw new Error(
+'No latest video is available'
+);
+
+}
+
+videoUrl.value =
+result.video.video_url || '';
+
+videoId.value =
+result.video.video_id || '';
+
+updateVideoPreview();
+
+}catch(error){
+
+videoUrl.value = '';
+videoId.value = '';
+
+videoUrlStatus.textContent =
+'Could not load the latest MONKO video.';
+
+videoUrlStatus.className =
+'video-url-status error';
+
+updateButton();
+
+console.error(
+'Latest MONKO video error:',
+error
+);
+
+}
 
 }
 
@@ -1104,6 +1173,8 @@ updateButton();
 
 
 loadCreatorInfo();
+
+loadLatestVideo();
 
 updateVideoPreview();
 
