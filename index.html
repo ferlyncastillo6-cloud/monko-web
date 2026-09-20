@@ -178,8 +178,8 @@ View Content
 READY TO EXPORT
 </span>
 
-<h2>
-Monko tratando de convencer a la lavadora 😂
+<h2 id="latestContentTitle">
+Loading latest MONKO title...
 </h2>
 
 <p class="muted">
@@ -276,7 +276,8 @@ Title
 <input
 id="title"
 type="text"
-value="Monko tratando de convencer a la lavadora 😂"
+value=""
+placeholder="Loading MONKO title..."
 >
 
 </div>
@@ -546,8 +547,8 @@ Publication History
 TikTok
 </td>
 
-<td>
-Monko tratando de convencer a la lavadora 😂
+<td id="historyTitle">
+Loading latest MONKO title...
 </td>
 
 <td>
@@ -688,6 +689,15 @@ document.getElementById('videoUrl');
 const videoId =
 document.getElementById('videoId');
 
+const titleInput =
+document.getElementById('title');
+
+const latestContentTitle =
+document.getElementById('latestContentTitle');
+
+const historyTitle =
+document.getElementById('historyTitle');
+
 const videoUrlStatus =
 document.getElementById('videoUrlStatus');
 
@@ -709,7 +719,8 @@ function updateButton(){
 publish.disabled = !(
 privacy.value &&
 consent.checked &&
-videoUrl.value.trim()
+videoUrl.value.trim() &&
+titleInput.value.trim()
 );
 
 }
@@ -812,11 +823,30 @@ throw new Error(
 
 }
 
+
 videoUrl.value =
 result.video.video_url || '';
 
 videoId.value =
 result.video.video_id || '';
+
+
+const latestTitle =
+(result.video.title || '').trim();
+
+
+titleInput.value =
+latestTitle;
+
+latestContentTitle.textContent =
+latestTitle ||
+'No MONKO title available';
+
+
+historyTitle.textContent =
+latestTitle ||
+'No MONKO title available';
+
 
 updateVideoPreview();
 
@@ -824,6 +854,14 @@ updateVideoPreview();
 
 videoUrl.value = '';
 videoId.value = '';
+
+titleInput.value = '';
+
+latestContentTitle.textContent =
+'No latest MONKO title available';
+
+historyTitle.textContent =
+'No latest MONKO title available';
 
 videoUrlStatus.textContent =
 'Could not load the latest MONKO video.';
@@ -1036,6 +1074,12 @@ updateButton
 );
 
 
+titleInput.addEventListener(
+'input',
+updateButton
+);
+
+
 videoUrl.addEventListener(
 'input',
 updateVideoPreview
@@ -1049,7 +1093,8 @@ async function(){
 if(
 !privacy.value ||
 !consent.checked ||
-!videoUrl.value.trim()
+!videoUrl.value.trim() ||
+!titleInput.value.trim()
 ){
 
 updateButton();
@@ -1068,7 +1113,7 @@ status.textContent =
 const payload = {
 
 title:
-document.getElementById('title').value.trim(),
+titleInput.value.trim(),
 
 privacy_level:
 privacy.value,
