@@ -178,8 +178,8 @@ View Content
 READY TO EXPORT
 </span>
 
-<h2 id="latestContentTitle">
-Loading latest MONKO title...
+<h2>
+Monko tratando de convencer a la lavadora 😂
 </h2>
 
 <p class="muted">
@@ -260,9 +260,18 @@ TikTok account
 <input
 id="tiktokAccount"
 type="text"
-value="Loading TikTok account..."
+value="Checking TikTok connection..."
 readonly
 >
+
+<a
+class="btn primary"
+id="tiktokConnectButton"
+href="#"
+style="display:none;margin-top:10px"
+>
+Connect TikTok
+</a>
 
 </div>
 
@@ -276,8 +285,7 @@ Title
 <input
 id="title"
 type="text"
-value=""
-placeholder="Loading MONKO title..."
+value="Monko tratando de convencer a la lavadora 😂"
 >
 
 </div>
@@ -449,25 +457,35 @@ Connected Platforms
 <div class="platforms">
 
 
-<div class="platform">
+<div class="platform" id="tiktokPlatform">
 
 <strong>
 TikTok
 </strong>
 
-<div class="connected">
-● Connected
+<div class="connected" id="tiktokPlatformStatus">
+● Checking connection...
 </div>
 
-<p class="muted">
-@monkooficial
+<p class="muted" id="tiktokPlatformAccount">
+Checking TikTok account...
 </p>
 
 <a
 class="btn secondary"
+id="tiktokManageButton"
 href="#export"
 >
 Manage
+</a>
+
+<a
+class="btn primary"
+id="tiktokConnectPlatformButton"
+href="#"
+style="display:none;margin-top:8px"
+>
+Connect TikTok
 </a>
 
 </div>
@@ -547,8 +565,8 @@ Publication History
 TikTok
 </td>
 
-<td id="historyTitle">
-Loading latest MONKO title...
+<td>
+Monko tratando de convencer a la lavadora 😂
 </td>
 
 <td>
@@ -658,6 +676,9 @@ const PUBLISH_URL =
 const LATEST_VIDEO_URL =
 'https://ferlyn06.app.n8n.cloud/webhook/monko/tiktok/latest-video';
 
+const TIKTOK_OAUTH_URL =
+'https://www.tiktok.com/v2/auth/authorize/?client_key=sbawubdaromq03ayzu&response_type=code&scope=user.info.basic%2Cvideo.publish%2Cvideo.upload&redirect_uri=https%3A%2F%2Fferlyn06.app.n8n.cloud%2Fwebhook%2Ftiktok%2Foauth%2Fcallback&state=monko_tiktok_auth';
+
 
 const privacy =
 document.getElementById('privacy');
@@ -689,15 +710,6 @@ document.getElementById('videoUrl');
 const videoId =
 document.getElementById('videoId');
 
-const titleInput =
-document.getElementById('title');
-
-const latestContentTitle =
-document.getElementById('latestContentTitle');
-
-const historyTitle =
-document.getElementById('historyTitle');
-
 const videoUrlStatus =
 document.getElementById('videoUrlStatus');
 
@@ -713,14 +725,85 @@ document.getElementById('contentVideo');
 const contentMonko =
 document.getElementById('contentMonko');
 
+const tiktokConnectButton =
+document.getElementById('tiktokConnectButton');
+
+const tiktokPlatformStatus =
+document.getElementById('tiktokPlatformStatus');
+
+const tiktokPlatformAccount =
+document.getElementById('tiktokPlatformAccount');
+
+const tiktokManageButton =
+document.getElementById('tiktokManageButton');
+
+const tiktokConnectPlatformButton =
+document.getElementById('tiktokConnectPlatformButton');
+
+
+function setTikTokDisconnected(){
+
+ tiktokAccount.value =
+ 'TikTok account not connected';
+
+ tiktokConnectButton.href = TIKTOK_OAUTH_URL;
+ tiktokConnectButton.style.display = 'inline-block';
+
+ tiktokPlatformStatus.textContent =
+ '● Not connected';
+
+ tiktokPlatformStatus.style.color = '#ff7777';
+
+ tiktokPlatformAccount.textContent =
+ 'Connect your TikTok account';
+
+ tiktokManageButton.style.display = 'none';
+
+ tiktokConnectPlatformButton.href = TIKTOK_OAUTH_URL;
+ tiktokConnectPlatformButton.style.display = 'inline-block';
+
+ privacy.innerHTML =
+ '<option value="">Connect TikTok first</option>';
+
+ comments.disabled = true;
+ duet.disabled = true;
+ stitch.disabled = true;
+
+ status.textContent =
+ 'TikTok is not connected. Click Connect TikTok to authorize MONKO.';
+
+ updateButton();
+}
+
+
+function setTikTokConnected(username,nickname){
+
+ const account =
+ '@' + username +
+ (nickname ? ' · ' + nickname : '');
+
+ tiktokAccount.value = account;
+
+ tiktokConnectButton.style.display = 'none';
+
+ tiktokPlatformStatus.textContent =
+ '● Connected';
+
+ tiktokPlatformStatus.style.color = '#61dc88';
+
+ tiktokPlatformAccount.textContent = account;
+
+ tiktokManageButton.style.display = 'inline-block';
+ tiktokConnectPlatformButton.style.display = 'none';
+}
+
 
 function updateButton(){
 
 publish.disabled = !(
 privacy.value &&
 consent.checked &&
-videoUrl.value.trim() &&
-titleInput.value.trim()
+videoUrl.value.trim()
 );
 
 }
@@ -823,30 +906,11 @@ throw new Error(
 
 }
 
-
 videoUrl.value =
 result.video.video_url || '';
 
 videoId.value =
 result.video.video_id || '';
-
-
-const latestTitle =
-(result.video.title || '').trim();
-
-
-titleInput.value =
-latestTitle;
-
-latestContentTitle.textContent =
-latestTitle ||
-'No MONKO title available';
-
-
-historyTitle.textContent =
-latestTitle ||
-'No MONKO title available';
-
 
 updateVideoPreview();
 
@@ -854,14 +918,6 @@ updateVideoPreview();
 
 videoUrl.value = '';
 videoId.value = '';
-
-titleInput.value = '';
-
-latestContentTitle.textContent =
-'No latest MONKO title available';
-
-historyTitle.textContent =
-'No latest MONKO title available';
 
 videoUrlStatus.textContent =
 'Could not load the latest MONKO video.';
@@ -936,21 +992,16 @@ creator?.data ?? creator;
 
 if(creatorData.creator_username){
 
-tiktokAccount.value =
-'@' +
-creatorData.creator_username +
-(
-creatorData.creator_nickname
-?
-' · ' + creatorData.creator_nickname
-:
-''
+setTikTokConnected(
+creatorData.creator_username,
+creatorData.creator_nickname || ''
 );
 
 }else{
 
-tiktokAccount.value =
-'TikTok account connected';
+throw new Error(
+'No connected TikTok creator was returned by MONKO backend'
+);
 
 }
 
@@ -1041,14 +1092,7 @@ updateButton();
 
 }catch(error){
 
-tiktokAccount.value =
-'Unable to load TikTok account';
-
-privacy.innerHTML =
-'<option value="">Unable to load privacy options</option>';
-
-status.textContent =
-'Could not load TikTok creator information. Check the MONKO backend connection.';
+setTikTokDisconnected();
 
 console.error(
 'TikTok creator info error:',
@@ -1062,6 +1106,24 @@ updateButton();
 }
 
 
+tiktokConnectButton.addEventListener(
+'click',
+function(event){
+event.preventDefault();
+window.location.href = TIKTOK_OAUTH_URL;
+}
+);
+
+
+tiktokConnectPlatformButton.addEventListener(
+'click',
+function(event){
+event.preventDefault();
+window.location.href = TIKTOK_OAUTH_URL;
+}
+);
+
+
 privacy.addEventListener(
 'change',
 updateButton
@@ -1070,12 +1132,6 @@ updateButton
 
 consent.addEventListener(
 'change',
-updateButton
-);
-
-
-titleInput.addEventListener(
-'input',
 updateButton
 );
 
@@ -1093,8 +1149,7 @@ async function(){
 if(
 !privacy.value ||
 !consent.checked ||
-!videoUrl.value.trim() ||
-!titleInput.value.trim()
+!videoUrl.value.trim()
 ){
 
 updateButton();
@@ -1113,7 +1168,7 @@ status.textContent =
 const payload = {
 
 title:
-titleInput.value.trim(),
+document.getElementById('title').value.trim(),
 
 privacy_level:
 privacy.value,
