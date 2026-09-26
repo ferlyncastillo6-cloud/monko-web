@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MONKO Dashboard</title>
+<link rel="icon" type="image/png" href="MONKO_icon_1024x1024.png">
+<link rel="apple-touch-icon" href="MONKO_icon_1024x1024.png">
 
 <style>
 *{box-sizing:border-box}
@@ -12,7 +14,8 @@ a{text-decoration:none;color:inherit}
 button,input,select{font:inherit}
 .app{display:flex;min-height:100vh}
 .sidebar{width:235px;background:#111419;border-right:1px solid #242830;padding:24px 16px;position:fixed;top:0;bottom:0}
-.logo{font-size:25px;font-weight:800;padding:8px 12px 30px}
+.logo{display:flex;align-items:center;gap:10px;font-size:25px;font-weight:800;padding:8px 12px 30px}
+.logo-icon{width:42px;height:42px;object-fit:cover;border-radius:10px;display:block}
 .logo span{opacity:.55}
 .nav a{display:block;padding:12px 14px;border-radius:10px;color:#aeb4bd;margin-bottom:5px}
 .nav a:hover,.nav a.active{background:#1b2027;color:#fff}
@@ -93,7 +96,8 @@ color:#ff7777;
 <aside class="sidebar">
 
 <div class="logo">
-MONKO<span> AI</span>
+<img src="MONKO_icon_1024x1024.png" alt="MONKO" class="logo-icon">
+<span>MONKO AI</span>
 </div>
 
 <nav class="nav">
@@ -178,7 +182,7 @@ View Content
 READY TO EXPORT
 </span>
 
-<h2>
+<h2 id="latestContentTitle">
 Monko tratando de convencer a la lavadora 😂
 </h2>
 
@@ -725,6 +729,12 @@ document.getElementById('contentVideo');
 const contentMonko =
 document.getElementById('contentMonko');
 
+const latestContentTitle =
+document.getElementById('latestContentTitle');
+
+const titleInput =
+document.getElementById('title');
+
 const tiktokConnectButton =
 document.getElementById('tiktokConnectButton');
 
@@ -897,6 +907,28 @@ throw new Error(
 
 const result =
 await response.json();
+
+const latestVideo =
+result?.video || {};
+
+const latestTitle =
+String(
+latestVideo.title ||
+latestVideo.name ||
+latestVideo.titulo ||
+latestVideo.title_text ||
+''
+).trim();
+
+if(latestTitle){
+
+latestContentTitle.textContent =
+latestTitle;
+
+titleInput.value =
+latestTitle;
+
+}
 
 if(!result?.success || !result?.video?.video_url){
 
